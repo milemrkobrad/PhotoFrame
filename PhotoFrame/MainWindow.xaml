@@ -12,13 +12,13 @@
             <Setter Property="Foreground" Value="White"/>
         </Style>
     </Window.Resources>
-    
+
 
     <Grid Background="Black">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1.8*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -29,20 +29,49 @@
 
 
         <TextBlock Grid.ColumnSpan="2" Text="Status" Name="txtStatus" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <Button Content="..." Name="btnStatus" Grid.Column="1" Width="40" HorizontalAlignment="Right" VerticalAlignment="Stretch" Background="Black" FontWeight="Bold" Foreground="White"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+            <Button Content="..." Name="btnStatus" Grid.Column="1" Width="40" HorizontalAlignment="Right" VerticalAlignment="Stretch" Background="Black" FontWeight="Bold" Foreground="White"/>
+            <Button Content="X" Name="btnClose" Grid.Column="1" Width="40" HorizontalAlignment="Right" VerticalAlignment="Stretch" Background="Black" FontWeight="Bold" Foreground="White" Click="btnClose_Click"/>
+        </StackPanel>
 
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="TRENUTNO"/>
+        <StackPanel Grid.Row="1" Grid.RowSpan="2">
+            <TextBlock Text="TRENUTNO" Foreground="CadetBlue"/>
             <WrapPanel>
-                <Image Source="{Binding IconUrl}" Width="50" Height="50"/>
-                <TextBlock Text="{Binding Temp}" FontSize="25"/>
+                <Image Source="{Binding weatherData.IconUrl}" Width="70" Height="70"/>
+                <TextBlock Text="{Binding weatherData.Temp}" FontSize="50"/>
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding TempMin, StringFormat=Min:{0:C}}" Margin="10,0,0,0"/>
-                    <TextBlock Text="{Binding TempMax, StringFormat=Max:{0:C}}" Margin="10,0,0,0"/>
+                    <TextBlock Text="{Binding weatherData.TempMin, StringFormat=Min: {0:C}}" Margin="10,0,0,0"/>
+                    <TextBlock Text="{Binding weatherData.TempMax, StringFormat=Max: {0:C}}" Margin="10,0,0,0"/>
+                    <TextBlock Text="{Binding weatherData.Pressure, StringFormat=Tlak: {0:C}}" Margin="10,0,0,0"/>
+                    <TextBlock Text="{Binding weatherData.Humidity, StringFormat=Vlaga: {0:C}}" Margin="10,0,0,0"/>
+                    <TextBlock Text="{Binding weatherData.WindSpeed, StringFormat=Vjetar: {0:C}}" Margin="10,0,0,0"/>
                 </StackPanel>
             </WrapPanel>
-            <TextBlock Text="{Binding Description}" FontSize="25" TextWrapping="Wrap" Margin="5,0,0,0" HorizontalAlignment="Center"/>
-            <TextBlock Text="3 DANA"/>
+            <TextBlock Text="{Binding weatherData.Description}" FontSize="25" TextWrapping="Wrap" Margin="5,0,0,0" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding weatherData.Sunrise, StringFormat=Izlazak: {0:C}}" TextWrapping="Wrap" Margin="5,0,0,0" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding weatherData.Sunset, StringFormat=Zalazak: {0:C}}" TextWrapping="Wrap" Margin="5,0,0,0" HorizontalAlignment="Center"/>
+
+            <TextBlock Text="PROGNOZA" Foreground="CadetBlue" Margin="0,20,0,0"/>
+            <DataGrid ItemsSource="{Binding Path=forecast}" AutoGenerateColumns="False" Margin="5,5,5,0" Background="Black" Foreground="White">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Datum i vrijeme" Binding="{Binding Dt}"/>
+                    <DataGridTextColumn Header="Desc" Binding="{Binding Description}"/>
+                    <DataGridTextColumn Header="Temp" Binding="{Binding Temp}"/>
+                </DataGrid.Columns>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Background" Value="CadetBlue"/>
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.CellStyle>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Setter Property="Background" Value="Black"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
         </StackPanel>
 
         <Image Grid.Column="1" Grid.Row="1" Name="imgPhoto" Margin="5,5,5,5" Source="/Resources/Original-JPG-Image.jpg"/>
@@ -54,6 +83,7 @@
             </StackPanel>
             <TextBlock Name="txtTime" Text="00:00" FontSize="60" FontWeight="Bold" Margin="20,0,10,0"/>
         </WrapPanel>
+
 
     </Grid>
 </Window>

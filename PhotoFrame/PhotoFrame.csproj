@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ConvertUnixDate.cs" />
     <Compile Include="RestClient.cs" />
     <Compile Include="SlideShow.cs" />
     <Compile Include="WeatherData.cs" />

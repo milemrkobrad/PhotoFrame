@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace PhotoFrame
 {
@@ -24,7 +25,7 @@ namespace PhotoFrame
         {
             InitializeComponent();
 
-            //poveži se na weather api
+            //poveži se na weather api - trenutno vrijeme
             RestClient restClient = new RestClient();
             restClient.EndPoint = "http://api.openweathermap.org/data/2.5/weather?q=Zagreb,HR&units=metric&appid=afd75004902d6b7f60f880ff6322266f&lang=hr";
             string strResponse = restClient.MakeRequest();
@@ -63,7 +64,22 @@ namespace PhotoFrame
             }
             //
 
-            DataContext = weatherData;
+            //forecast
+            //poveži se na weather api - trenutno vrijeme
+            RestClient restClientF = new RestClient();
+            restClientF.EndPoint = "http://api.openweathermap.org/data/2.5/forecast?q=Zagreb,HR&units=metric&appid=afd75004902d6b7f60f880ff6322266f&lang=hr";
+            string strResponseF = restClientF.MakeRequest();
+
+            WeatherData weatherDataForecast = new WeatherData();
+            ObservableCollection<WeatherData> forecast = new ObservableCollection<WeatherData>();
+            forecast = weatherDataForecast.PopulatePropertiesForecast(strResponseF);
+            //
+
+            DataContext = new
+            {
+                weatherData,
+                forecast
+            };
 
         }
 
@@ -86,6 +102,11 @@ namespace PhotoFrame
 
                 imgPhoto.Source = image;
             }
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
